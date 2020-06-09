@@ -10,7 +10,7 @@ router.get('/', function(req, res) {
   res.render('index', { weather: null, err: null });
 });
 
-router.get('/',function(req,res){
+router.get('/map',function(req,res){
   res.render('map',{ weather: null, err: null });
 });
 
