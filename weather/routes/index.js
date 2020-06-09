@@ -10,6 +10,10 @@ router.get('/', function(req, res) {
   res.render('index', { weather: null, err: null });
 });
 
+router.get('/', function(req, res) {
+  res.render('map', { weather: null, err: null });
+});
+
 router.post('/get_weather', async function (req,res) {
   let city = req.body.city;
   let url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=${UNITS}&appid=${OWM_API_KEY}`;
