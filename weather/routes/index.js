@@ -30,7 +30,7 @@ router.post('/get_weather', async function (req,res) {
     }
     else {
       let unit_hex = (UNITS == 'imperial') ? '&#8457' : '&#8451';
-      res.render('index', {weather: weather, error: null, units: unit_hex});
+      res.render('map', {weather: weather, error: null, units: unit_hex});
     }
   }
   catch (err) {
