@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const fetch = require("node-fetch");
 require('dotenv').config();
-const OWM_API_KEY = process.env.OWM_API_KEY || 'invalid_key';
+const OWM_API_KEY = process.env.OWM_API_KEY || 'bc95b5fa0feb9941ae51d3991e5161e0';
 const UNITS = process.env.UNITS || 'metric';
 
 /* GET home page. */
@@ -12,6 +12,10 @@ router.get('/', function(req, res) {
 
 router.get('/map',function(req,res){
   res.render('map',{ weather: null, err: null });
+});
+
+router.get('/geocode',function(req,res){
+  res.render('geocode',{ weather: null, err: null });
 });
 
 router.post('/get_weather', async function (req,res) {
@@ -26,7 +30,7 @@ router.post('/get_weather', async function (req,res) {
       res.render('index', {weather: null, error: 'Error: Unknown city'});
     }
     else if (weather.cod == '401' && weather.main == undefined) {
-      res.render('index', {weather: null, error: 'Error: Invalid API Key. Please see http://openweathermap.org/faq#error401 for more info.'});
+      res.render('map', {weather: null, error: 'Error: Invalid API Key. Please see http://openweathermap.org/faq#error401 for more info.'});
     }
     else {
       let unit_hex = (UNITS == 'imperial') ? '&#8457' : '&#8451';
