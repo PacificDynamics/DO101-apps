@@ -1,0 +1,1902 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      k8s.v1.cni.cncf.io/networks-status: ""
+      kubernetes.io/limit-ranger: 'LimitRanger plugin set: cpu, memory request for
+        container sti-build; cpu, memory limit for container sti-build; cpu, memory
+        request for init container git-clone; cpu, memory limit for init container
+        git-clone; cpu, memory request for init container manage-dockerfile; cpu,
+        memory limit for init container manage-dockerfile'
+      openshift.io/build.name: contacts-1
+      openshift.io/scc: privileged
+    creationTimestamp: "2020-06-09T23:57:32Z"
+    labels:
+      openshift.io/build.name: contacts-1
+    name: contacts-1-build
+    namespace: peter-contact
+    ownerReferences:
+    - apiVersion: build.openshift.io/v1
+      controller: true
+      kind: Build
+      name: contacts-1
+      uid: fbf9a683-aaac-11ea-b3a6-0a580a810005
+    resourceVersion: "72933231"
+    selfLink: /api/v1/namespaces/peter-contact/pods/contacts-1-build
+    uid: fc209fe4-aaac-11ea-9eb4-02e5d704b7db
+  spec:
+    containers:
+    - args:
+      - --loglevel=0
+      command:
+      - openshift-sti-build
+      env:
+      - name: BUILD
+        value: |
+          {"kind":"Build","apiVersion":"build.openshift.io/v1","metadata":{"name":"contacts-1","namespace":"peter-contact","selfLink":"/apis/build.openshift.io/v1/namespaces/peter-contact/builds/contacts-1","uid":"fbf9a683-aaac-11ea-b3a6-0a580a810005","resourceVersion":"72931966","creationTimestamp":"2020-06-09T23:57:32Z","labels":{"app":"contacts","app.kubernetes.io/component":"contacts","app.kubernetes.io/instance":"contacts","app.kubernetes.io/name":"nodejs","app.kubernetes.io/part-of":"contacts","app.openshift.io/runtime":"nodejs","app.openshift.io/runtime-version":"10","buildconfig":"contacts","openshift.io/build-config.name":"contacts","openshift.io/build.start-policy":"Serial"},"annotations":{"openshift.io/build-config.name":"contacts","openshift.io/build.number":"1"},"ownerReferences":[{"apiVersion":"build.openshift.io/v1","kind":"BuildConfig","name":"contacts","uid":"fbcad66f-aaac-11ea-9257-0a580a82000a","controller":true}]},"spec":{"serviceAccount":"builder","source":{"type":"Git","git":{"uri":"https://github.com/PacificDynamics/DO101-apps.git","ref":"contact"},"contextDir":"/contacts"},"strategy":{"type":"Source","sourceStrategy":{"from":{"kind":"DockerImage","name":"image-registry.openshift-image-registry.svc:5000/openshift/nodejs@sha256:74a3ef2964efc03dfc239da3f09691b720ce54ff4bb47588864adb222133f0fc"},"pullSecret":{"name":"builder-dockercfg-ljhcf"}}},"output":{"to":{"kind":"DockerImage","name":"image-registry.openshift-image-registry.svc:5000/peter-contact/contacts:latest"},"pushSecret":{"name":"builder-dockercfg-ljhcf"}},"resources":{},"postCommit":{},"nodeSelector":null,"triggeredBy":[{"message":"Image change","imageChangeBuild":{"imageID":"image-registry.openshift-image-registry.svc:5000/openshift/nodejs@sha256:74a3ef2964efc03dfc239da3f09691b720ce54ff4bb47588864adb222133f0fc","fromRef":{"kind":"ImageStreamTag","namespace":"openshift","name":"nodejs:10"}}}]},"status":{"phase":"New","outputDockerImageReference":"image-registry.openshift-image-registry.svc:5000/peter-contact/contacts:latest","config":{"kind":"BuildConfig","namespace":"peter-contact","name":"contacts"},"output":{}}}
+      - name: LANG
+        value: en_US.utf8
+      - name: SOURCE_REPOSITORY
+        value: https://github.com/PacificDynamics/DO101-apps.git
+      - name: SOURCE_URI
+        value: https://github.com/PacificDynamics/DO101-apps.git
+      - name: SOURCE_CONTEXT_DIR
+        value: /contacts
+      - name: SOURCE_REF
+        value: contact
+      - name: ALLOWED_UIDS
+        value: 1-
+      - name: DROP_CAPS
+        value: KILL,MKNOD,SETGID,SETUID
+      - name: PUSH_DOCKERCFG_PATH
+        value: /var/run/secrets/openshift.io/push
+      - name: PULL_DOCKERCFG_PATH
+        value: /var/run/secrets/openshift.io/pull
+      - name: BUILD_REGISTRIES_CONF_PATH
+        value: /var/run/configs/openshift.io/build-system/registries.conf
+      - name: BUILD_REGISTRIES_DIR_PATH
+        value: /var/run/configs/openshift.io/build-system/registries.d
+      - name: BUILD_SIGNATURE_POLICY_PATH
+        value: /var/run/configs/openshift.io/build-system/policy.json
+      - name: BUILD_STORAGE_CONF_PATH
+        value: /var/run/configs/openshift.io/build-system/storage.conf
+      - name: BUILD_STORAGE_DRIVER
+        value: overlay
+      - name: BUILD_ISOLATION
+        value: chroot
+      - name: BUILD_BLOBCACHE_DIR
+        value: /var/cache/blobs
+      - name: HTTP_PROXY
+      - name: HTTPS_PROXY
+      - name: NO_PROXY
+      image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:bb70e52ea99fcd69574cf1728c0645a8409078d9440378641e3184af921c1022
+      imagePullPolicy: IfNotPresent
+      name: sti-build
+      resources:
+        limits:
+          cpu: 500m
+          memory: 1536Mi
+        requests:
+          cpu: 5m
+          memory: 50Mi
+      securityContext:
+        privileged: true
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: FallbackToLogsOnError
+      volumeMounts:
+      - mountPath: /tmp/build
+        name: buildworkdir
+      - mountPath: /var/lib/containers/cache
+        name: buildcachedir
+      - mountPath: /var/run/secrets/openshift.io/push
+        name: builder-dockercfg-ljhcf-push
+        readOnly: true
+      - mountPath: /var/run/secrets/openshift.io/pull
+        name: builder-dockercfg-ljhcf-pull
+        readOnly: true
+      - mountPath: /var/run/configs/openshift.io/build-system
+        name: build-system-configs
+        readOnly: true
+      - mountPath: /var/run/configs/openshift.io/certs
+        name: build-ca-bundles
+      - mountPath: /etc/pki/ca-trust/extracted/pem
+        name: build-proxy-ca-bundles
+      - mountPath: /var/lib/containers/storage
+        name: container-storage-root
+      - mountPath: /var/cache/blobs
+        name: build-blob-cache
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: builder-token-rk6s2
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    imagePullSecrets:
+    - name: builder-dockercfg-ljhcf
+    initContainers:
+    - args:
+      - --loglevel=0
+      command:
+      - openshift-git-clone
+      env:
+      - name: BUILD
+        value: |
+          {"kind":"Build","apiVersion":"build.openshift.io/v1","metadata":{"name":"contacts-1","namespace":"peter-contact","selfLink":"/apis/build.openshift.io/v1/namespaces/peter-contact/builds/contacts-1","uid":"fbf9a683-aaac-11ea-b3a6-0a580a810005","resourceVersion":"72931966","creationTimestamp":"2020-06-09T23:57:32Z","labels":{"app":"contacts","app.kubernetes.io/component":"contacts","app.kubernetes.io/instance":"contacts","app.kubernetes.io/name":"nodejs","app.kubernetes.io/part-of":"contacts","app.openshift.io/runtime":"nodejs","app.openshift.io/runtime-version":"10","buildconfig":"contacts","openshift.io/build-config.name":"contacts","openshift.io/build.start-policy":"Serial"},"annotations":{"openshift.io/build-config.name":"contacts","openshift.io/build.number":"1"},"ownerReferences":[{"apiVersion":"build.openshift.io/v1","kind":"BuildConfig","name":"contacts","uid":"fbcad66f-aaac-11ea-9257-0a580a82000a","controller":true}]},"spec":{"serviceAccount":"builder","source":{"type":"Git","git":{"uri":"https://github.com/PacificDynamics/DO101-apps.git","ref":"contact"},"contextDir":"/contacts"},"strategy":{"type":"Source","sourceStrategy":{"from":{"kind":"DockerImage","name":"image-registry.openshift-image-registry.svc:5000/openshift/nodejs@sha256:74a3ef2964efc03dfc239da3f09691b720ce54ff4bb47588864adb222133f0fc"},"pullSecret":{"name":"builder-dockercfg-ljhcf"}}},"output":{"to":{"kind":"DockerImage","name":"image-registry.openshift-image-registry.svc:5000/peter-contact/contacts:latest"},"pushSecret":{"name":"builder-dockercfg-ljhcf"}},"resources":{},"postCommit":{},"nodeSelector":null,"triggeredBy":[{"message":"Image change","imageChangeBuild":{"imageID":"image-registry.openshift-image-registry.svc:5000/openshift/nodejs@sha256:74a3ef2964efc03dfc239da3f09691b720ce54ff4bb47588864adb222133f0fc","fromRef":{"kind":"ImageStreamTag","namespace":"openshift","name":"nodejs:10"}}}]},"status":{"phase":"New","outputDockerImageReference":"image-registry.openshift-image-registry.svc:5000/peter-contact/contacts:latest","config":{"kind":"BuildConfig","namespace":"peter-contact","name":"contacts"},"output":{}}}
+      - name: LANG
+        value: en_US.utf8
+      - name: SOURCE_REPOSITORY
+        value: https://github.com/PacificDynamics/DO101-apps.git
+      - name: SOURCE_URI
+        value: https://github.com/PacificDynamics/DO101-apps.git
+      - name: SOURCE_CONTEXT_DIR
+        value: /contacts
+      - name: SOURCE_REF
+        value: contact
+      - name: ALLOWED_UIDS
+        value: 1-
+      - name: DROP_CAPS
+        value: KILL,MKNOD,SETGID,SETUID
+      - name: BUILD_REGISTRIES_CONF_PATH
+        value: /var/run/configs/openshift.io/build-system/registries.conf
+      - name: BUILD_REGISTRIES_DIR_PATH
+        value: /var/run/configs/openshift.io/build-system/registries.d
+      - name: BUILD_SIGNATURE_POLICY_PATH
+        value: /var/run/configs/openshift.io/build-system/policy.json
+      - name: BUILD_STORAGE_CONF_PATH
+        value: /var/run/configs/openshift.io/build-system/storage.conf
+      - name: BUILD_BLOBCACHE_DIR
+        value: /var/cache/blobs
+      - name: HTTP_PROXY
+      - name: HTTPS_PROXY
+      - name: NO_PROXY
+      image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:bb70e52ea99fcd69574cf1728c0645a8409078d9440378641e3184af921c1022
+      imagePullPolicy: IfNotPresent
+      name: git-clone
+      resources:
+        limits:
+          cpu: 500m
+          memory: 1536Mi
+        requests:
+          cpu: 5m
+          memory: 50Mi
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: FallbackToLogsOnError
+      volumeMounts:
+      - mountPath: /tmp/build
+        name: buildworkdir
+      - mountPath: /var/run/configs/openshift.io/build-system
+        name: build-system-configs
+        readOnly: true
+      - mountPath: /var/run/configs/openshift.io/certs
+        name: build-ca-bundles
+      - mountPath: /etc/pki/ca-trust/extracted/pem
+        name: build-proxy-ca-bundles
+      - mountPath: /var/cache/blobs
+        name: build-blob-cache
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: builder-token-rk6s2
+        readOnly: true
+    - args:
+      - --loglevel=0
+      command:
+      - openshift-manage-dockerfile
+      env:
+      - name: BUILD
+        value: |
+          {"kind":"Build","apiVersion":"build.openshift.io/v1","metadata":{"name":"contacts-1","namespace":"peter-contact","selfLink":"/apis/build.openshift.io/v1/namespaces/peter-contact/builds/contacts-1","uid":"fbf9a683-aaac-11ea-b3a6-0a580a810005","resourceVersion":"72931966","creationTimestamp":"2020-06-09T23:57:32Z","labels":{"app":"contacts","app.kubernetes.io/component":"contacts","app.kubernetes.io/instance":"contacts","app.kubernetes.io/name":"nodejs","app.kubernetes.io/part-of":"contacts","app.openshift.io/runtime":"nodejs","app.openshift.io/runtime-version":"10","buildconfig":"contacts","openshift.io/build-config.name":"contacts","openshift.io/build.start-policy":"Serial"},"annotations":{"openshift.io/build-config.name":"contacts","openshift.io/build.number":"1"},"ownerReferences":[{"apiVersion":"build.openshift.io/v1","kind":"BuildConfig","name":"contacts","uid":"fbcad66f-aaac-11ea-9257-0a580a82000a","controller":true}]},"spec":{"serviceAccount":"builder","source":{"type":"Git","git":{"uri":"https://github.com/PacificDynamics/DO101-apps.git","ref":"contact"},"contextDir":"/contacts"},"strategy":{"type":"Source","sourceStrategy":{"from":{"kind":"DockerImage","name":"image-registry.openshift-image-registry.svc:5000/openshift/nodejs@sha256:74a3ef2964efc03dfc239da3f09691b720ce54ff4bb47588864adb222133f0fc"},"pullSecret":{"name":"builder-dockercfg-ljhcf"}}},"output":{"to":{"kind":"DockerImage","name":"image-registry.openshift-image-registry.svc:5000/peter-contact/contacts:latest"},"pushSecret":{"name":"builder-dockercfg-ljhcf"}},"resources":{},"postCommit":{},"nodeSelector":null,"triggeredBy":[{"message":"Image change","imageChangeBuild":{"imageID":"image-registry.openshift-image-registry.svc:5000/openshift/nodejs@sha256:74a3ef2964efc03dfc239da3f09691b720ce54ff4bb47588864adb222133f0fc","fromRef":{"kind":"ImageStreamTag","namespace":"openshift","name":"nodejs:10"}}}]},"status":{"phase":"New","outputDockerImageReference":"image-registry.openshift-image-registry.svc:5000/peter-contact/contacts:latest","config":{"kind":"BuildConfig","namespace":"peter-contact","name":"contacts"},"output":{}}}
+      - name: LANG
+        value: en_US.utf8
+      - name: SOURCE_REPOSITORY
+        value: https://github.com/PacificDynamics/DO101-apps.git
+      - name: SOURCE_URI
+        value: https://github.com/PacificDynamics/DO101-apps.git
+      - name: SOURCE_CONTEXT_DIR
+        value: /contacts
+      - name: SOURCE_REF
+        value: contact
+      - name: ALLOWED_UIDS
+        value: 1-
+      - name: DROP_CAPS
+        value: KILL,MKNOD,SETGID,SETUID
+      - name: BUILD_REGISTRIES_CONF_PATH
+        value: /var/run/configs/openshift.io/build-system/registries.conf
+      - name: BUILD_REGISTRIES_DIR_PATH
+        value: /var/run/configs/openshift.io/build-system/registries.d
+      - name: BUILD_SIGNATURE_POLICY_PATH
+        value: /var/run/configs/openshift.io/build-system/policy.json
+      - name: BUILD_STORAGE_CONF_PATH
+        value: /var/run/configs/openshift.io/build-system/storage.conf
+      - name: BUILD_BLOBCACHE_DIR
+        value: /var/cache/blobs
+      - name: HTTP_PROXY
+      - name: HTTPS_PROXY
+      - name: NO_PROXY
+      image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:bb70e52ea99fcd69574cf1728c0645a8409078d9440378641e3184af921c1022
+      imagePullPolicy: IfNotPresent
+      name: manage-dockerfile
+      resources:
+        limits:
+          cpu: 500m
+          memory: 1536Mi
+        requests:
+          cpu: 5m
+          memory: 50Mi
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: FallbackToLogsOnError
+      volumeMounts:
+      - mountPath: /tmp/build
+        name: buildworkdir
+      - mountPath: /var/run/configs/openshift.io/build-system
+        name: build-system-configs
+        readOnly: true
+      - mountPath: /var/run/configs/openshift.io/certs
+        name: build-ca-bundles
+      - mountPath: /etc/pki/ca-trust/extracted/pem
+        name: build-proxy-ca-bundles
+      - mountPath: /var/cache/blobs
+        name: build-blob-cache
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: builder-token-rk6s2
+        readOnly: true
+    nodeName: ip-10-0-131-47.ec2.internal
+    nodeSelector:
+      kubernetes.io/os: linux
+    priority: 0
+    restartPolicy: Never
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: builder
+    serviceAccountName: builder
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - hostPath:
+        path: /var/lib/containers/cache
+        type: ""
+      name: buildcachedir
+    - emptyDir: {}
+      name: buildworkdir
+    - name: builder-dockercfg-ljhcf-push
+      secret:
+        defaultMode: 384
+        secretName: builder-dockercfg-ljhcf
+    - name: builder-dockercfg-ljhcf-pull
+      secret:
+        defaultMode: 384
+        secretName: builder-dockercfg-ljhcf
+    - configMap:
+        defaultMode: 420
+        name: contacts-1-sys-config
+      name: build-system-configs
+    - configMap:
+        defaultMode: 420
+        items:
+        - key: service-ca.crt
+          path: certs.d/image-registry.openshift-image-registry.svc:5000/ca.crt
+        name: contacts-1-ca
+      name: build-ca-bundles
+    - configMap:
+        defaultMode: 420
+        items:
+        - key: ca-bundle.crt
+          path: tls-ca-bundle.pem
+        name: contacts-1-global-ca
+      name: build-proxy-ca-bundles
+    - emptyDir: {}
+      name: container-storage-root
+    - emptyDir: {}
+      name: build-blob-cache
+    - name: builder-token-rk6s2
+      secret:
+        defaultMode: 420
+        secretName: builder-token-rk6s2
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2020-06-09T23:57:44Z"
+      reason: PodCompleted
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2020-06-10T00:00:15Z"
+      reason: PodCompleted
+      status: "False"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2020-06-10T00:00:15Z"
+      reason: PodCompleted
+      status: "False"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2020-06-09T23:57:32Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: cri-o://6f2f4c0628e9e35adeb109e93f382aab3db3444a1103cee0675d60859c2647cf
+      image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:bb70e52ea99fcd69574cf1728c0645a8409078d9440378641e3184af921c1022
+      imageID: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:bb70e52ea99fcd69574cf1728c0645a8409078d9440378641e3184af921c1022
+      lastState: {}
+      name: sti-build
+      ready: false
+      restartCount: 0
+      state:
+        terminated:
+          containerID: cri-o://6f2f4c0628e9e35adeb109e93f382aab3db3444a1103cee0675d60859c2647cf
+          exitCode: 0
+          finishedAt: "2020-06-10T00:00:14Z"
+          reason: Completed
+          startedAt: "2020-06-09T23:57:45Z"
+    hostIP: 10.0.131.47
+    initContainerStatuses:
+    - containerID: cri-o://031c3e9e50e91ebd1bdbc8a10e4b4a82c6a7f9acd088a4c6aeb243ce92ea5ba9
+      image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:bb70e52ea99fcd69574cf1728c0645a8409078d9440378641e3184af921c1022
+      imageID: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:bb70e52ea99fcd69574cf1728c0645a8409078d9440378641e3184af921c1022
+      lastState: {}
+      name: git-clone
+      ready: true
+      restartCount: 0
+      state:
+        terminated:
+          containerID: cri-o://031c3e9e50e91ebd1bdbc8a10e4b4a82c6a7f9acd088a4c6aeb243ce92ea5ba9
+          exitCode: 0
+          finishedAt: "2020-06-09T23:57:43Z"
+          reason: OOMKilled
+          startedAt: "2020-06-09T23:57:41Z"
+    - containerID: cri-o://a0d2b4d259f665a7e1b4e5faa652d3d51f62c238b702674311615f8e32d8e90e
+      image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:bb70e52ea99fcd69574cf1728c0645a8409078d9440378641e3184af921c1022
+      imageID: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:bb70e52ea99fcd69574cf1728c0645a8409078d9440378641e3184af921c1022
+      lastState: {}
+      name: manage-dockerfile
+      ready: true
+      restartCount: 0
+      state:
+        terminated:
+          containerID: cri-o://a0d2b4d259f665a7e1b4e5faa652d3d51f62c238b702674311615f8e32d8e90e
+          exitCode: 0
+          finishedAt: "2020-06-09T23:57:44Z"
+          reason: Completed
+          startedAt: "2020-06-09T23:57:44Z"
+    phase: Succeeded
+    podIP: 10.131.1.149
+    qosClass: Burstable
+    startTime: "2020-06-09T23:57:32Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      k8s.v1.cni.cncf.io/networks-status: ""
+      kubernetes.io/limit-ranger: 'LimitRanger plugin set: cpu, memory request for
+        container deployment; cpu, memory limit for container deployment'
+      openshift.io/deployment-config.name: contacts
+      openshift.io/deployment.name: contacts-1
+      openshift.io/scc: restricted
+    creationTimestamp: "2020-06-10T00:00:15Z"
+    labels:
+      openshift.io/deployer-pod-for.name: contacts-1
+    name: contacts-1-deploy
+    namespace: peter-contact
+    ownerReferences:
+    - apiVersion: v1
+      kind: ReplicationController
+      name: contacts-1
+      uid: 5ced518b-aaad-11ea-9eb4-02e5d704b7db
+    resourceVersion: "72933418"
+    selfLink: /api/v1/namespaces/peter-contact/pods/contacts-1-deploy
+    uid: 5cfc2bad-aaad-11ea-9eb4-02e5d704b7db
+  spec:
+    activeDeadlineSeconds: 21600
+    containers:
+    - env:
+      - name: OPENSHIFT_DEPLOYMENT_NAME
+        value: contacts-1
+      - name: OPENSHIFT_DEPLOYMENT_NAMESPACE
+        value: peter-contact
+      image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:29e8526c0a87b83638cf664b363733f79bc042043917ab3a93cc8c1caa3351e4
+      imagePullPolicy: IfNotPresent
+      name: deployment
+      resources:
+        limits:
+          cpu: 500m
+          memory: 1536Mi
+        requests:
+          cpu: 5m
+          memory: 50Mi
+      securityContext:
+        capabilities:
+          drop:
+          - KILL
+          - MKNOD
+          - SETGID
+          - SETUID
+        runAsUser: 1061860000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: deployer-token-ljjdp
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    imagePullSecrets:
+    - name: deployer-dockercfg-xjxmf
+    nodeName: ip-10-0-131-47.ec2.internal
+    priority: 0
+    restartPolicy: Never
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1061860000
+      seLinuxOptions:
+        level: s0:c249,c54
+    serviceAccount: deployer
+    serviceAccountName: deployer
+    shareProcessNamespace: false
+    terminationGracePeriodSeconds: 10
+    tolerations:
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: deployer-token-ljjdp
+      secret:
+        defaultMode: 420
+        secretName: deployer-token-ljjdp
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2020-06-10T00:00:15Z"
+      reason: PodCompleted
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2020-06-10T00:00:38Z"
+      reason: PodCompleted
+      status: "False"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2020-06-10T00:00:38Z"
+      reason: PodCompleted
+      status: "False"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2020-06-10T00:00:15Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: cri-o://08d43bc693bdc5d1bf05371a235a6b7bfd95e8d9baa46df2129dac0b1c374ad2
+      image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:29e8526c0a87b83638cf664b363733f79bc042043917ab3a93cc8c1caa3351e4
+      imageID: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:29e8526c0a87b83638cf664b363733f79bc042043917ab3a93cc8c1caa3351e4
+      lastState: {}
+      name: deployment
+      ready: false
+      restartCount: 0
+      state:
+        terminated:
+          containerID: cri-o://08d43bc693bdc5d1bf05371a235a6b7bfd95e8d9baa46df2129dac0b1c374ad2
+          exitCode: 0
+          finishedAt: "2020-06-10T00:00:38Z"
+          reason: Completed
+          startedAt: "2020-06-10T00:00:24Z"
+    hostIP: 10.0.131.47
+    phase: Succeeded
+    podIP: 10.131.1.151
+    qosClass: Burstable
+    startTime: "2020-06-10T00:00:15Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      k8s.v1.cni.cncf.io/networks-status: ""
+      kubernetes.io/limit-ranger: 'LimitRanger plugin set: cpu, memory request for
+        container deployment; cpu, memory limit for container deployment'
+      openshift.io/deployment-config.name: contacts
+      openshift.io/deployment.name: contacts-2
+      openshift.io/scc: restricted
+    creationTimestamp: "2020-06-10T00:04:31Z"
+    labels:
+      openshift.io/deployer-pod-for.name: contacts-2
+    name: contacts-2-deploy
+    namespace: peter-contact
+    ownerReferences:
+    - apiVersion: v1
+      kind: ReplicationController
+      name: contacts-2
+      uid: f5842628-aaad-11ea-9eb4-02e5d704b7db
+    resourceVersion: "72935429"
+    selfLink: /api/v1/namespaces/peter-contact/pods/contacts-2-deploy
+    uid: f599dfdb-aaad-11ea-9eb4-02e5d704b7db
+  spec:
+    activeDeadlineSeconds: 21600
+    containers:
+    - env:
+      - name: OPENSHIFT_DEPLOYMENT_NAME
+        value: contacts-2
+      - name: OPENSHIFT_DEPLOYMENT_NAMESPACE
+        value: peter-contact
+      image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:29e8526c0a87b83638cf664b363733f79bc042043917ab3a93cc8c1caa3351e4
+      imagePullPolicy: IfNotPresent
+      name: deployment
+      resources:
+        limits:
+          cpu: 500m
+          memory: 1536Mi
+        requests:
+          cpu: 5m
+          memory: 50Mi
+      securityContext:
+        capabilities:
+          drop:
+          - KILL
+          - MKNOD
+          - SETGID
+          - SETUID
+        runAsUser: 1061860000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: deployer-token-ljjdp
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    imagePullSecrets:
+    - name: deployer-dockercfg-xjxmf
+    nodeName: ip-10-0-131-47.ec2.internal
+    priority: 0
+    restartPolicy: Never
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1061860000
+      seLinuxOptions:
+        level: s0:c249,c54
+    serviceAccount: deployer
+    serviceAccountName: deployer
+    shareProcessNamespace: false
+    terminationGracePeriodSeconds: 10
+    tolerations:
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: deployer-token-ljjdp
+      secret:
+        defaultMode: 420
+        secretName: deployer-token-ljjdp
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2020-06-10T00:04:31Z"
+      reason: PodCompleted
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2020-06-10T00:04:54Z"
+      reason: PodCompleted
+      status: "False"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2020-06-10T00:04:54Z"
+      reason: PodCompleted
+      status: "False"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2020-06-10T00:04:31Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: cri-o://47c0418abc60c0edad056a1acc1b209600c5f46f857b98041f73d4f0b9949170
+      image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:29e8526c0a87b83638cf664b363733f79bc042043917ab3a93cc8c1caa3351e4
+      imageID: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:29e8526c0a87b83638cf664b363733f79bc042043917ab3a93cc8c1caa3351e4
+      lastState: {}
+      name: deployment
+      ready: false
+      restartCount: 0
+      state:
+        terminated:
+          containerID: cri-o://47c0418abc60c0edad056a1acc1b209600c5f46f857b98041f73d4f0b9949170
+          exitCode: 0
+          finishedAt: "2020-06-10T00:04:54Z"
+          reason: Completed
+          startedAt: "2020-06-10T00:04:40Z"
+    hostIP: 10.0.131.47
+    phase: Succeeded
+    podIP: 10.131.1.155
+    qosClass: Burstable
+    startTime: "2020-06-10T00:04:31Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      k8s.v1.cni.cncf.io/networks-status: |-
+        [{
+            "name": "openshift-sdn",
+            "interface": "eth0",
+            "ips": [
+                "10.131.1.156"
+            ],
+            "default": true,
+            "dns": {}
+        }]
+      kubernetes.io/limit-ranger: 'LimitRanger plugin set: cpu, memory request for
+        container contacts; cpu, memory limit for container contacts'
+      openshift.io/deployment-config.latest-version: "2"
+      openshift.io/deployment-config.name: contacts
+      openshift.io/deployment.name: contacts-2
+      openshift.io/scc: restricted
+    creationTimestamp: "2020-06-10T00:04:42Z"
+    generateName: contacts-2-
+    labels:
+      app: contacts
+      deployment: contacts-2
+      deploymentconfig: contacts
+    name: contacts-2-lfhv8
+    namespace: peter-contact
+    ownerReferences:
+    - apiVersion: v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicationController
+      name: contacts-2
+      uid: f5842628-aaad-11ea-9eb4-02e5d704b7db
+    resourceVersion: "72935390"
+    selfLink: /api/v1/namespaces/peter-contact/pods/contacts-2-lfhv8
+    uid: fbf5be7f-aaad-11ea-9eb4-02e5d704b7db
+  spec:
+    containers:
+    - env:
+      - name: DB_CONFIG
+        valueFrom:
+          secretKeyRef:
+            key: DB_CONFIG
+            name: contactsdb-secrect
+      image: image-registry.openshift-image-registry.svc:5000/peter-contact/contacts@sha256:a8e3b509a976248f80b17138b5a9c23d69218bfaa566931ad81b8b0e9150ea9f
+      imagePullPolicy: Always
+      name: contacts
+      ports:
+      - containerPort: 8080
+        protocol: TCP
+      resources:
+        limits:
+          cpu: 500m
+          memory: 1536Mi
+        requests:
+          cpu: 5m
+          memory: 50Mi
+      securityContext:
+        capabilities:
+          drop:
+          - KILL
+          - MKNOD
+          - SETGID
+          - SETUID
+        runAsUser: 1061860000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: default-token-kqbpk
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    imagePullSecrets:
+    - name: default-dockercfg-2z8p4
+    nodeName: ip-10-0-131-47.ec2.internal
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1061860000
+      seLinuxOptions:
+        level: s0:c249,c54
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: default-token-kqbpk
+      secret:
+        defaultMode: 420
+        secretName: default-token-kqbpk
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2020-06-10T00:04:42Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2020-06-10T00:04:51Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2020-06-10T00:04:51Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2020-06-10T00:04:42Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: cri-o://3d877ef443e170e155171b1d4f535cafd5447cc7b332cce741462bf1a01b2f4f
+      image: image-registry.openshift-image-registry.svc:5000/peter-contact/contacts@sha256:a8e3b509a976248f80b17138b5a9c23d69218bfaa566931ad81b8b0e9150ea9f
+      imageID: image-registry.openshift-image-registry.svc:5000/peter-contact/contacts@sha256:a8e3b509a976248f80b17138b5a9c23d69218bfaa566931ad81b8b0e9150ea9f
+      lastState: {}
+      name: contacts
+      ready: true
+      restartCount: 0
+      state:
+        running:
+          startedAt: "2020-06-10T00:04:51Z"
+    hostIP: 10.0.131.47
+    phase: Running
+    podIP: 10.131.1.156
+    qosClass: Burstable
+    startTime: "2020-06-10T00:04:42Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      k8s.v1.cni.cncf.io/networks-status: |-
+        [{
+            "name": "openshift-sdn",
+            "interface": "eth0",
+            "ips": [
+                "10.130.4.19"
+            ],
+            "default": true,
+            "dns": {}
+        }]
+      kubernetes.io/limit-ranger: 'LimitRanger plugin set: cpu request for container
+        postgresql; cpu limit for container postgresql'
+      openshift.io/deployment-config.latest-version: "1"
+      openshift.io/deployment-config.name: contactsdb
+      openshift.io/deployment.name: contactsdb-1
+      openshift.io/scc: restricted
+    creationTimestamp: "2020-06-09T23:46:53Z"
+    generateName: contactsdb-1-
+    labels:
+      deployment: contactsdb-1
+      deploymentconfig: contactsdb
+      name: contactsdb
+    name: contactsdb-1-65nt2
+    namespace: peter-contact
+    ownerReferences:
+    - apiVersion: v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicationController
+      name: contactsdb-1
+      uid: 79453f8c-aaab-11ea-9eb4-02e5d704b7db
+    resourceVersion: "72927159"
+    selfLink: /api/v1/namespaces/peter-contact/pods/contactsdb-1-65nt2
+    uid: 7ecf09d5-aaab-11ea-9eb4-02e5d704b7db
+  spec:
+    containers:
+    - env:
+      - name: POSTGRESQL_USER
+        valueFrom:
+          secretKeyRef:
+            key: database-user
+            name: contactsdb
+      - name: POSTGRESQL_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: database-password
+            name: contactsdb
+      - name: POSTGRESQL_DATABASE
+        valueFrom:
+          secretKeyRef:
+            key: database-name
+            name: contactsdb
+      image: image-registry.openshift-image-registry.svc:5000/openshift/postgresql@sha256:de3ab628b403dc5eed986a7f392c34687bddafee7bdfccfd65cecf137ade3dfd
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        exec:
+          command:
+          - /usr/libexec/check-container
+          - --live
+        failureThreshold: 3
+        initialDelaySeconds: 120
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 10
+      name: postgresql
+      ports:
+      - containerPort: 5432
+        protocol: TCP
+      readinessProbe:
+        exec:
+          command:
+          - /usr/libexec/check-container
+        failureThreshold: 3
+        initialDelaySeconds: 5
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 5m
+          memory: 512Mi
+      securityContext:
+        capabilities:
+          drop:
+          - KILL
+          - MKNOD
+          - SETGID
+          - SETUID
+        privileged: false
+        procMount: Default
+        runAsUser: 1061860000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/lib/pgsql/data
+        name: contactsdb-data
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: default-token-kqbpk
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    imagePullSecrets:
+    - name: default-dockercfg-2z8p4
+    nodeName: ip-10-0-130-176.ec2.internal
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1061860000
+      seLinuxOptions:
+        level: s0:c249,c54
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - emptyDir: {}
+      name: contactsdb-data
+    - name: default-token-kqbpk
+      secret:
+        defaultMode: 420
+        secretName: default-token-kqbpk
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2020-06-09T23:46:53Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2020-06-09T23:47:12Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2020-06-09T23:47:12Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2020-06-09T23:46:53Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: cri-o://cefdeead247f19affecff05ece01768516ca55c95e1eaf3f79daba7ae187993f
+      image: image-registry.openshift-image-registry.svc:5000/openshift/postgresql@sha256:de3ab628b403dc5eed986a7f392c34687bddafee7bdfccfd65cecf137ade3dfd
+      imageID: image-registry.openshift-image-registry.svc:5000/openshift/postgresql@sha256:de3ab628b403dc5eed986a7f392c34687bddafee7bdfccfd65cecf137ade3dfd
+      lastState: {}
+      name: postgresql
+      ready: true
+      restartCount: 0
+      state:
+        running:
+          startedAt: "2020-06-09T23:47:02Z"
+    hostIP: 10.0.130.176
+    phase: Running
+    podIP: 10.130.4.19
+    qosClass: Burstable
+    startTime: "2020-06-09T23:46:53Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      k8s.v1.cni.cncf.io/networks-status: ""
+      kubernetes.io/limit-ranger: 'LimitRanger plugin set: cpu, memory request for
+        container deployment; cpu, memory limit for container deployment'
+      openshift.io/deployment-config.name: contactsdb
+      openshift.io/deployment.name: contactsdb-1
+      openshift.io/scc: restricted
+    creationTimestamp: "2020-06-09T23:46:43Z"
+    labels:
+      openshift.io/deployer-pod-for.name: contactsdb-1
+    name: contactsdb-1-deploy
+    namespace: peter-contact
+    ownerReferences:
+    - apiVersion: v1
+      kind: ReplicationController
+      name: contactsdb-1
+      uid: 79453f8c-aaab-11ea-9eb4-02e5d704b7db
+    resourceVersion: "72927170"
+    selfLink: /api/v1/namespaces/peter-contact/pods/contactsdb-1-deploy
+    uid: 79536d00-aaab-11ea-9eb4-02e5d704b7db
+  spec:
+    activeDeadlineSeconds: 21600
+    containers:
+    - env:
+      - name: OPENSHIFT_DEPLOYMENT_NAME
+        value: contactsdb-1
+      - name: OPENSHIFT_DEPLOYMENT_NAMESPACE
+        value: peter-contact
+      image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:29e8526c0a87b83638cf664b363733f79bc042043917ab3a93cc8c1caa3351e4
+      imagePullPolicy: IfNotPresent
+      name: deployment
+      resources:
+        limits:
+          cpu: 500m
+          memory: 1536Mi
+        requests:
+          cpu: 5m
+          memory: 50Mi
+      securityContext:
+        capabilities:
+          drop:
+          - KILL
+          - MKNOD
+          - SETGID
+          - SETUID
+        runAsUser: 1061860000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: deployer-token-ljjdp
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    imagePullSecrets:
+    - name: deployer-dockercfg-xjxmf
+    nodeName: ip-10-0-131-47.ec2.internal
+    priority: 0
+    restartPolicy: Never
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1061860000
+      seLinuxOptions:
+        level: s0:c249,c54
+    serviceAccount: deployer
+    serviceAccountName: deployer
+    shareProcessNamespace: false
+    terminationGracePeriodSeconds: 10
+    tolerations:
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: deployer-token-ljjdp
+      secret:
+        defaultMode: 420
+        secretName: deployer-token-ljjdp
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2020-06-09T23:46:44Z"
+      reason: PodCompleted
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2020-06-09T23:47:12Z"
+      reason: PodCompleted
+      status: "False"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2020-06-09T23:47:12Z"
+      reason: PodCompleted
+      status: "False"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2020-06-09T23:46:44Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: cri-o://61af434dc28c79d8de7b3d6dc751d8f0afe8761d031950c9037c8f2e75c813d9
+      image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:29e8526c0a87b83638cf664b363733f79bc042043917ab3a93cc8c1caa3351e4
+      imageID: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:29e8526c0a87b83638cf664b363733f79bc042043917ab3a93cc8c1caa3351e4
+      lastState: {}
+      name: deployment
+      ready: false
+      restartCount: 0
+      state:
+        terminated:
+          containerID: cri-o://61af434dc28c79d8de7b3d6dc751d8f0afe8761d031950c9037c8f2e75c813d9
+          exitCode: 0
+          finishedAt: "2020-06-09T23:47:12Z"
+          reason: Completed
+          startedAt: "2020-06-09T23:46:52Z"
+    hostIP: 10.0.131.47
+    phase: Succeeded
+    podIP: 10.131.1.144
+    qosClass: Burstable
+    startTime: "2020-06-09T23:46:44Z"
+- apiVersion: v1
+  kind: ReplicationController
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/original-replicas: "1"
+      openshift.io/deployer-pod.completed-at: 2020-06-10 00:00:38 +0000 UTC
+      openshift.io/deployer-pod.created-at: 2020-06-10 00:00:15 +0000 UTC
+      openshift.io/deployer-pod.name: contacts-1-deploy
+      openshift.io/deployment-config.latest-version: "1"
+      openshift.io/deployment-config.name: contacts
+      openshift.io/deployment.phase: Complete
+      openshift.io/deployment.replicas: "1"
+      openshift.io/deployment.status-reason: config change
+      openshift.io/encoded-deployment-config: |
+        {"kind":"DeploymentConfig","apiVersion":"apps.openshift.io/v1","metadata":{"name":"contacts","namespace":"peter-contact","selfLink":"/apis/apps.openshift.io/v1/namespaces/peter-contact/deploymentconfigs/contacts","uid":"fbcd6d29-aaac-11ea-87eb-0a580a800041","resourceVersion":"72933214","generation":2,"creationTimestamp":"2020-06-09T23:57:32Z","labels":{"app":"contacts","app.kubernetes.io/component":"contacts","app.kubernetes.io/instance":"contacts","app.kubernetes.io/name":"nodejs","app.kubernetes.io/part-of":"contacts","app.openshift.io/runtime":"nodejs","app.openshift.io/runtime-version":"10"},"annotations":{"app.openshift.io/vcs-ref":"contact","app.openshift.io/vcs-uri":"https://github.com/PacificDynamics/DO101-apps.git"}},"spec":{"strategy":{"type":"Rolling","rollingParams":{"updatePeriodSeconds":1,"intervalSeconds":1,"timeoutSeconds":600,"maxUnavailable":"25%","maxSurge":"25%"},"resources":{},"activeDeadlineSeconds":21600},"triggers":[{"type":"ImageChange","imageChangeParams":{"automatic":true,"containerNames":["contacts"],"from":{"kind":"ImageStreamTag","namespace":"peter-contact","name":"contacts:latest"},"lastTriggeredImage":"image-registry.openshift-image-registry.svc:5000/peter-contact/contacts@sha256:a8e3b509a976248f80b17138b5a9c23d69218bfaa566931ad81b8b0e9150ea9f"}},{"type":"ConfigChange"}],"replicas":1,"revisionHistoryLimit":10,"test":false,"selector":{"app":"contacts","deploymentconfig":"contacts"},"template":{"metadata":{"creationTimestamp":null,"labels":{"app":"contacts","deploymentconfig":"contacts"}},"spec":{"containers":[{"name":"contacts","image":"image-registry.openshift-image-registry.svc:5000/peter-contact/contacts@sha256:a8e3b509a976248f80b17138b5a9c23d69218bfaa566931ad81b8b0e9150ea9f","ports":[{"containerPort":8080,"protocol":"TCP"}],"env":[{"name":"DB_CONFIG","valueFrom":{"secretKeyRef":{"name":"contactsdb-secrect","key":"DB_CONFIG"}}}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","imagePullPolicy":"Always"}],"restartPolicy":"Always","terminationGracePeriodSeconds":30,"dnsPolicy":"ClusterFirst","securityContext":{},"schedulerName":"default-scheduler"}}},"status":{"latestVersion":1,"observedGeneration":1,"replicas":0,"updatedReplicas":0,"availableReplicas":0,"unavailableReplicas":0,"details":{"message":"config change","causes":[{"type":"ConfigChange"}]},"conditions":[{"type":"Available","status":"False","lastUpdateTime":"2020-06-09T23:57:32Z","lastTransitionTime":"2020-06-09T23:57:32Z","message":"Deployment config does not have minimum availability."}]}}
+    creationTimestamp: "2020-06-10T00:00:15Z"
+    generation: 3
+    labels:
+      app: contacts
+      app.kubernetes.io/component: contacts
+      app.kubernetes.io/instance: contacts
+      app.kubernetes.io/name: nodejs
+      app.kubernetes.io/part-of: contacts
+      app.openshift.io/runtime: nodejs
+      app.openshift.io/runtime-version: "10"
+      openshift.io/deployment-config.name: contacts
+    name: contacts-1
+    namespace: peter-contact
+    ownerReferences:
+    - apiVersion: apps.openshift.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: DeploymentConfig
+      name: contacts
+      uid: fbcd6d29-aaac-11ea-87eb-0a580a800041
+    resourceVersion: "72935401"
+    selfLink: /api/v1/namespaces/peter-contact/replicationcontrollers/contacts-1
+    uid: 5ced518b-aaad-11ea-9eb4-02e5d704b7db
+  spec:
+    replicas: 0
+    selector:
+      app: contacts
+      deployment: contacts-1
+      deploymentconfig: contacts
+    template:
+      metadata:
+        annotations:
+          openshift.io/deployment-config.latest-version: "1"
+          openshift.io/deployment-config.name: contacts
+          openshift.io/deployment.name: contacts-1
+        creationTimestamp: null
+        labels:
+          app: contacts
+          deployment: contacts-1
+          deploymentconfig: contacts
+      spec:
+        containers:
+        - env:
+          - name: DB_CONFIG
+            valueFrom:
+              secretKeyRef:
+                key: DB_CONFIG
+                name: contactsdb-secrect
+          image: image-registry.openshift-image-registry.svc:5000/peter-contact/contacts@sha256:a8e3b509a976248f80b17138b5a9c23d69218bfaa566931ad81b8b0e9150ea9f
+          imagePullPolicy: Always
+          name: contacts
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 3
+    replicas: 0
+- apiVersion: v1
+  kind: ReplicationController
+  metadata:
+    annotations:
+      openshift.io/deployer-pod.completed-at: 2020-06-10 00:04:54 +0000 UTC
+      openshift.io/deployer-pod.created-at: 2020-06-10 00:04:31 +0000 UTC
+      openshift.io/deployer-pod.name: contacts-2-deploy
+      openshift.io/deployment-config.latest-version: "2"
+      openshift.io/deployment-config.name: contacts
+      openshift.io/deployment.phase: Complete
+      openshift.io/deployment.replicas: ""
+      openshift.io/deployment.status-reason: manual change
+      openshift.io/encoded-deployment-config: |
+        {"kind":"DeploymentConfig","apiVersion":"apps.openshift.io/v1","metadata":{"name":"contacts","namespace":"peter-contact","selfLink":"/apis/apps.openshift.io/v1/namespaces/peter-contact/deploymentconfigs/contacts","uid":"fbcd6d29-aaac-11ea-87eb-0a580a800041","resourceVersion":"72935204","generation":3,"creationTimestamp":"2020-06-09T23:57:32Z","labels":{"app":"contacts","app.kubernetes.io/component":"contacts","app.kubernetes.io/instance":"contacts","app.kubernetes.io/name":"nodejs","app.kubernetes.io/part-of":"contacts","app.openshift.io/runtime":"nodejs","app.openshift.io/runtime-version":"10"},"annotations":{"app.openshift.io/vcs-ref":"contact","app.openshift.io/vcs-uri":"https://github.com/PacificDynamics/DO101-apps.git"}},"spec":{"strategy":{"type":"Rolling","rollingParams":{"updatePeriodSeconds":1,"intervalSeconds":1,"timeoutSeconds":600,"maxUnavailable":"25%","maxSurge":"25%"},"resources":{},"activeDeadlineSeconds":21600},"triggers":[{"type":"ImageChange","imageChangeParams":{"automatic":true,"containerNames":["contacts"],"from":{"kind":"ImageStreamTag","namespace":"peter-contact","name":"contacts:latest"},"lastTriggeredImage":"image-registry.openshift-image-registry.svc:5000/peter-contact/contacts@sha256:a8e3b509a976248f80b17138b5a9c23d69218bfaa566931ad81b8b0e9150ea9f"}},{"type":"ConfigChange"}],"replicas":1,"revisionHistoryLimit":10,"test":false,"selector":{"app":"contacts","deploymentconfig":"contacts"},"template":{"metadata":{"creationTimestamp":null,"labels":{"app":"contacts","deploymentconfig":"contacts"}},"spec":{"containers":[{"name":"contacts","image":"image-registry.openshift-image-registry.svc:5000/peter-contact/contacts@sha256:a8e3b509a976248f80b17138b5a9c23d69218bfaa566931ad81b8b0e9150ea9f","ports":[{"containerPort":8080,"protocol":"TCP"}],"env":[{"name":"DB_CONFIG","valueFrom":{"secretKeyRef":{"name":"contactsdb-secrect","key":"DB_CONFIG"}}}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","imagePullPolicy":"Always"}],"restartPolicy":"Always","terminationGracePeriodSeconds":30,"dnsPolicy":"ClusterFirst","securityContext":{},"schedulerName":"default-scheduler"}}},"status":{"latestVersion":2,"observedGeneration":2,"replicas":1,"updatedReplicas":1,"availableReplicas":1,"unavailableReplicas":0,"details":{"message":"manual change","causes":[{"type":"Manual"}]},"conditions":[{"type":"Available","status":"True","lastUpdateTime":"2020-06-10T00:00:37Z","lastTransitionTime":"2020-06-10T00:00:37Z","message":"Deployment config has minimum availability."},{"type":"Progressing","status":"True","lastUpdateTime":"2020-06-10T00:00:38Z","lastTransitionTime":"2020-06-10T00:00:25Z","reason":"NewReplicationControllerAvailable","message":"replication controller \"contacts-1\" successfully rolled out"}],"readyReplicas":1}}
+    creationTimestamp: "2020-06-10T00:04:31Z"
+    generation: 2
+    labels:
+      app: contacts
+      app.kubernetes.io/component: contacts
+      app.kubernetes.io/instance: contacts
+      app.kubernetes.io/name: nodejs
+      app.kubernetes.io/part-of: contacts
+      app.openshift.io/runtime: nodejs
+      app.openshift.io/runtime-version: "10"
+      openshift.io/deployment-config.name: contacts
+    name: contacts-2
+    namespace: peter-contact
+    ownerReferences:
+    - apiVersion: apps.openshift.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: DeploymentConfig
+      name: contacts
+      uid: fbcd6d29-aaac-11ea-87eb-0a580a800041
+    resourceVersion: "72935427"
+    selfLink: /api/v1/namespaces/peter-contact/replicationcontrollers/contacts-2
+    uid: f5842628-aaad-11ea-9eb4-02e5d704b7db
+  spec:
+    replicas: 1
+    selector:
+      app: contacts
+      deployment: contacts-2
+      deploymentconfig: contacts
+    template:
+      metadata:
+        annotations:
+          openshift.io/deployment-config.latest-version: "2"
+          openshift.io/deployment-config.name: contacts
+          openshift.io/deployment.name: contacts-2
+        creationTimestamp: null
+        labels:
+          app: contacts
+          deployment: contacts-2
+          deploymentconfig: contacts
+      spec:
+        containers:
+        - env:
+          - name: DB_CONFIG
+            valueFrom:
+              secretKeyRef:
+                key: DB_CONFIG
+                name: contactsdb-secrect
+          image: image-registry.openshift-image-registry.svc:5000/peter-contact/contacts@sha256:a8e3b509a976248f80b17138b5a9c23d69218bfaa566931ad81b8b0e9150ea9f
+          imagePullPolicy: Always
+          name: contacts
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: v1
+  kind: ReplicationController
+  metadata:
+    annotations:
+      openshift.io/deployer-pod.completed-at: 2020-06-09 23:47:12 +0000 UTC
+      openshift.io/deployer-pod.created-at: 2020-06-09 23:46:43 +0000 UTC
+      openshift.io/deployer-pod.name: contactsdb-1-deploy
+      openshift.io/deployment-config.latest-version: "1"
+      openshift.io/deployment-config.name: contactsdb
+      openshift.io/deployment.phase: Complete
+      openshift.io/deployment.replicas: "1"
+      openshift.io/deployment.status-reason: config change
+      openshift.io/encoded-deployment-config: |
+        {"kind":"DeploymentConfig","apiVersion":"apps.openshift.io/v1","metadata":{"name":"contactsdb","namespace":"peter-contact","selfLink":"/apis/apps.openshift.io/v1/namespaces/peter-contact/deploymentconfigs/contactsdb","uid":"78e0864d-aaab-11ea-87eb-0a580a800041","resourceVersion":"72926907","generation":2,"creationTimestamp":"2020-06-09T23:46:43Z","labels":{"template":"postgresql-ephemeral-template","template.openshift.io/template-instance-owner":"78a395b9-aaab-11ea-b3a6-0a580a810005"},"annotations":{"template.alpha.openshift.io/wait-for-ready":"true"}},"spec":{"strategy":{"type":"Recreate","recreateParams":{"timeoutSeconds":600},"resources":{},"activeDeadlineSeconds":21600},"triggers":[{"type":"ImageChange","imageChangeParams":{"automatic":true,"containerNames":["postgresql"],"from":{"kind":"ImageStreamTag","namespace":"openshift","name":"postgresql:10"},"lastTriggeredImage":"image-registry.openshift-image-registry.svc:5000/openshift/postgresql@sha256:de3ab628b403dc5eed986a7f392c34687bddafee7bdfccfd65cecf137ade3dfd"}},{"type":"ConfigChange"}],"replicas":1,"revisionHistoryLimit":10,"test":false,"selector":{"name":"contactsdb"},"template":{"metadata":{"creationTimestamp":null,"labels":{"name":"contactsdb"}},"spec":{"volumes":[{"name":"contactsdb-data","emptyDir":{}}],"containers":[{"name":"postgresql","image":"image-registry.openshift-image-registry.svc:5000/openshift/postgresql@sha256:de3ab628b403dc5eed986a7f392c34687bddafee7bdfccfd65cecf137ade3dfd","ports":[{"containerPort":5432,"protocol":"TCP"}],"env":[{"name":"POSTGRESQL_USER","valueFrom":{"secretKeyRef":{"name":"contactsdb","key":"database-user"}}},{"name":"POSTGRESQL_PASSWORD","valueFrom":{"secretKeyRef":{"name":"contactsdb","key":"database-password"}}},{"name":"POSTGRESQL_DATABASE","valueFrom":{"secretKeyRef":{"name":"contactsdb","key":"database-name"}}}],"resources":{"limits":{"memory":"512Mi"}},"volumeMounts":[{"name":"contactsdb-data","mountPath":"/var/lib/pgsql/data"}],"livenessProbe":{"exec":{"command":["/usr/libexec/check-container","--live"]},"initialDelaySeconds":120,"timeoutSeconds":10,"periodSeconds":10,"successThreshold":1,"failureThreshold":3},"readinessProbe":{"exec":{"command":["/usr/libexec/check-container"]},"initialDelaySeconds":5,"timeoutSeconds":1,"periodSeconds":10,"successThreshold":1,"failureThreshold":3},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","imagePullPolicy":"IfNotPresent","securityContext":{"capabilities":{},"privileged":false,"procMount":"Default"}}],"restartPolicy":"Always","terminationGracePeriodSeconds":30,"dnsPolicy":"ClusterFirst","securityContext":{},"schedulerName":"default-scheduler"}}},"status":{"latestVersion":1,"observedGeneration":0,"replicas":0,"updatedReplicas":0,"availableReplicas":0,"unavailableReplicas":0,"details":{"message":"config change","causes":[{"type":"ConfigChange"}]}}}
+    creationTimestamp: "2020-06-09T23:46:43Z"
+    generation: 2
+    labels:
+      openshift.io/deployment-config.name: contactsdb
+      template: postgresql-ephemeral-template
+      template.openshift.io/template-instance-owner: 78a395b9-aaab-11ea-b3a6-0a580a810005
+    name: contactsdb-1
+    namespace: peter-contact
+    ownerReferences:
+    - apiVersion: apps.openshift.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: DeploymentConfig
+      name: contactsdb
+      uid: 78e0864d-aaab-11ea-87eb-0a580a800041
+    resourceVersion: "72927168"
+    selfLink: /api/v1/namespaces/peter-contact/replicationcontrollers/contactsdb-1
+    uid: 79453f8c-aaab-11ea-9eb4-02e5d704b7db
+  spec:
+    replicas: 1
+    selector:
+      deployment: contactsdb-1
+      deploymentconfig: contactsdb
+      name: contactsdb
+    template:
+      metadata:
+        annotations:
+          openshift.io/deployment-config.latest-version: "1"
+          openshift.io/deployment-config.name: contactsdb
+          openshift.io/deployment.name: contactsdb-1
+        creationTimestamp: null
+        labels:
+          deployment: contactsdb-1
+          deploymentconfig: contactsdb
+          name: contactsdb
+      spec:
+        containers:
+        - env:
+          - name: POSTGRESQL_USER
+            valueFrom:
+              secretKeyRef:
+                key: database-user
+                name: contactsdb
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-password
+                name: contactsdb
+          - name: POSTGRESQL_DATABASE
+            valueFrom:
+              secretKeyRef:
+                key: database-name
+                name: contactsdb
+          image: image-registry.openshift-image-registry.svc:5000/openshift/postgresql@sha256:de3ab628b403dc5eed986a7f392c34687bddafee7bdfccfd65cecf137ade3dfd
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            exec:
+              command:
+              - /usr/libexec/check-container
+              - --live
+            failureThreshold: 3
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+          name: postgresql
+          ports:
+          - containerPort: 5432
+            protocol: TCP
+          readinessProbe:
+            exec:
+              command:
+              - /usr/libexec/check-container
+            failureThreshold: 3
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              memory: 512Mi
+          securityContext:
+            capabilities: {}
+            privileged: false
+            procMount: Default
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/lib/pgsql/data
+            name: contactsdb-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: contactsdb-data
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      app.openshift.io/vcs-ref: contact
+      app.openshift.io/vcs-uri: https://github.com/PacificDynamics/DO101-apps.git
+    creationTimestamp: "2020-06-09T23:57:32Z"
+    labels:
+      app: contacts
+      app.kubernetes.io/component: contacts
+      app.kubernetes.io/instance: contacts
+      app.kubernetes.io/name: nodejs
+      app.kubernetes.io/part-of: contacts
+      app.openshift.io/runtime: nodejs
+      app.openshift.io/runtime-version: "10"
+    name: contacts
+    namespace: peter-contact
+    resourceVersion: "72931959"
+    selfLink: /api/v1/namespaces/peter-contact/services/contacts
+    uid: fbd4ecfa-aaac-11ea-adae-0e18b0a4b171
+  spec:
+    clusterIP: 172.30.231.103
+    ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: contacts
+      deploymentconfig: contacts
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      template.openshift.io/expose-uri: postgres://{.spec.clusterIP}:{.spec.ports[?(.name=="postgresql")].port}
+    creationTimestamp: "2020-06-09T23:46:43Z"
+    labels:
+      template: postgresql-ephemeral-template
+      template.openshift.io/template-instance-owner: 78a395b9-aaab-11ea-b3a6-0a580a810005
+    name: contactsdb
+    namespace: peter-contact
+    resourceVersion: "72926897"
+    selfLink: /api/v1/namespaces/peter-contact/services/contactsdb
+    uid: 78dde0b1-aaab-11ea-9eb4-02e5d704b7db
+  spec:
+    clusterIP: 172.30.239.181
+    ports:
+    - name: postgresql
+      port: 5432
+      protocol: TCP
+      targetPort: 5432
+    selector:
+      name: contactsdb
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      app.openshift.io/vcs-ref: contact
+      app.openshift.io/vcs-uri: https://github.com/PacificDynamics/DO101-apps.git
+    creationTimestamp: "2020-06-09T23:57:32Z"
+    generation: 3
+    labels:
+      app: contacts
+      app.kubernetes.io/component: contacts
+      app.kubernetes.io/instance: contacts
+      app.kubernetes.io/name: nodejs
+      app.kubernetes.io/part-of: contacts
+      app.openshift.io/runtime: nodejs
+      app.openshift.io/runtime-version: "10"
+    name: contacts
+    namespace: peter-contact
+    resourceVersion: "72935428"
+    selfLink: /apis/apps.openshift.io/v1/namespaces/peter-contact/deploymentconfigs/contacts
+    uid: fbcd6d29-aaac-11ea-87eb-0a580a800041
+  spec:
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      app: contacts
+      deploymentconfig: contacts
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: contacts
+          deploymentconfig: contacts
+      spec:
+        containers:
+        - env:
+          - name: DB_CONFIG
+            valueFrom:
+              secretKeyRef:
+                key: DB_CONFIG
+                name: contactsdb-secrect
+          image: image-registry.openshift-image-registry.svc:5000/peter-contact/contacts@sha256:a8e3b509a976248f80b17138b5a9c23d69218bfaa566931ad81b8b0e9150ea9f
+          imagePullPolicy: Always
+          name: contacts
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    test: false
+    triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - contacts
+        from:
+          kind: ImageStreamTag
+          name: contacts:latest
+          namespace: peter-contact
+        lastTriggeredImage: image-registry.openshift-image-registry.svc:5000/peter-contact/contacts@sha256:a8e3b509a976248f80b17138b5a9c23d69218bfaa566931ad81b8b0e9150ea9f
+      type: ImageChange
+    - type: ConfigChange
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2020-06-10T00:00:37Z"
+      lastUpdateTime: "2020-06-10T00:00:37Z"
+      message: Deployment config has minimum availability.
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2020-06-10T00:04:52Z"
+      lastUpdateTime: "2020-06-10T00:04:54Z"
+      message: replication controller "contacts-2" successfully rolled out
+      reason: NewReplicationControllerAvailable
+      status: "True"
+      type: Progressing
+    details:
+      causes:
+      - type: Manual
+      message: manual change
+    latestVersion: 2
+    observedGeneration: 3
+    readyReplicas: 1
+    replicas: 1
+    unavailableReplicas: 0
+    updatedReplicas: 1
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      template.alpha.openshift.io/wait-for-ready: "true"
+    creationTimestamp: "2020-06-09T23:46:43Z"
+    generation: 2
+    labels:
+      template: postgresql-ephemeral-template
+      template.openshift.io/template-instance-owner: 78a395b9-aaab-11ea-b3a6-0a580a810005
+    name: contactsdb
+    namespace: peter-contact
+    resourceVersion: "72927169"
+    selfLink: /apis/apps.openshift.io/v1/namespaces/peter-contact/deploymentconfigs/contactsdb
+    uid: 78e0864d-aaab-11ea-87eb-0a580a800041
+  spec:
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      name: contactsdb
+    strategy:
+      activeDeadlineSeconds: 21600
+      recreateParams:
+        timeoutSeconds: 600
+      resources: {}
+      type: Recreate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          name: contactsdb
+      spec:
+        containers:
+        - env:
+          - name: POSTGRESQL_USER
+            valueFrom:
+              secretKeyRef:
+                key: database-user
+                name: contactsdb
+          - name: POSTGRESQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-password
+                name: contactsdb
+          - name: POSTGRESQL_DATABASE
+            valueFrom:
+              secretKeyRef:
+                key: database-name
+                name: contactsdb
+          image: image-registry.openshift-image-registry.svc:5000/openshift/postgresql@sha256:de3ab628b403dc5eed986a7f392c34687bddafee7bdfccfd65cecf137ade3dfd
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            exec:
+              command:
+              - /usr/libexec/check-container
+              - --live
+            failureThreshold: 3
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+          name: postgresql
+          ports:
+          - containerPort: 5432
+            protocol: TCP
+          readinessProbe:
+            exec:
+              command:
+              - /usr/libexec/check-container
+            failureThreshold: 3
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              memory: 512Mi
+          securityContext:
+            capabilities: {}
+            privileged: false
+            procMount: Default
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/lib/pgsql/data
+            name: contactsdb-data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: contactsdb-data
+    test: false
+    triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - postgresql
+        from:
+          kind: ImageStreamTag
+          name: postgresql:10
+          namespace: openshift
+        lastTriggeredImage: image-registry.openshift-image-registry.svc:5000/openshift/postgresql@sha256:de3ab628b403dc5eed986a7f392c34687bddafee7bdfccfd65cecf137ade3dfd
+      type: ImageChange
+    - type: ConfigChange
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2020-06-09T23:47:12Z"
+      lastUpdateTime: "2020-06-09T23:47:12Z"
+      message: Deployment config has minimum availability.
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2020-06-09T23:47:12Z"
+      lastUpdateTime: "2020-06-09T23:47:12Z"
+      message: replication controller "contactsdb-1" successfully rolled out
+      reason: NewReplicationControllerAvailable
+      status: "True"
+      type: Progressing
+    details:
+      causes:
+      - type: ConfigChange
+      message: config change
+    latestVersion: 1
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+    unavailableReplicas: 0
+    updatedReplicas: 1
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      app.openshift.io/vcs-ref: contact
+      app.openshift.io/vcs-uri: https://github.com/PacificDynamics/DO101-apps.git
+    creationTimestamp: "2020-06-09T23:57:32Z"
+    labels:
+      app: contacts
+      app.kubernetes.io/component: contacts
+      app.kubernetes.io/instance: contacts
+      app.kubernetes.io/name: nodejs
+      app.kubernetes.io/part-of: contacts
+      app.openshift.io/runtime: nodejs
+      app.openshift.io/runtime-version: "10"
+    name: contacts
+    namespace: peter-contact
+    resourceVersion: "72931965"
+    selfLink: /apis/build.openshift.io/v1/namespaces/peter-contact/buildconfigs/contacts
+    uid: fbcad66f-aaac-11ea-9257-0a580a82000a
+  spec:
+    failedBuildsHistoryLimit: 5
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: contacts:latest
+    postCommit: {}
+    resources: {}
+    runPolicy: Serial
+    source:
+      contextDir: /contacts
+      git:
+        ref: contact
+        uri: https://github.com/PacificDynamics/DO101-apps.git
+      type: Git
+    strategy:
+      sourceStrategy:
+        from:
+          kind: ImageStreamTag
+          name: nodejs:10
+          namespace: openshift
+      type: Source
+    successfulBuildsHistoryLimit: 5
+    triggers:
+    - generic:
+        secretReference:
+          name: contacts-generic-webhook-secret
+      type: Generic
+    - github:
+        secretReference:
+          name: contacts-github-webhook-secret
+      type: GitHub
+    - imageChange:
+        lastTriggeredImageID: image-registry.openshift-image-registry.svc:5000/openshift/nodejs@sha256:74a3ef2964efc03dfc239da3f09691b720ce54ff4bb47588864adb222133f0fc
+      type: ImageChange
+    - type: ConfigChange
+  status:
+    lastVersion: 1
+- apiVersion: build.openshift.io/v1
+  kind: Build
+  metadata:
+    annotations:
+      openshift.io/build-config.name: contacts
+      openshift.io/build.number: "1"
+      openshift.io/build.pod-name: contacts-1-build
+    creationTimestamp: "2020-06-09T23:57:32Z"
+    labels:
+      app: contacts
+      app.kubernetes.io/component: contacts
+      app.kubernetes.io/instance: contacts
+      app.kubernetes.io/name: nodejs
+      app.kubernetes.io/part-of: contacts
+      app.openshift.io/runtime: nodejs
+      app.openshift.io/runtime-version: "10"
+      buildconfig: contacts
+      openshift.io/build-config.name: contacts
+      openshift.io/build.start-policy: Serial
+    name: contacts-1
+    namespace: peter-contact
+    ownerReferences:
+    - apiVersion: build.openshift.io/v1
+      controller: true
+      kind: BuildConfig
+      name: contacts
+      uid: fbcad66f-aaac-11ea-9257-0a580a82000a
+    resourceVersion: "72933229"
+    selfLink: /apis/build.openshift.io/v1/namespaces/peter-contact/builds/contacts-1
+    uid: fbf9a683-aaac-11ea-b3a6-0a580a810005
+  spec:
+    nodeSelector: null
+    output:
+      pushSecret:
+        name: builder-dockercfg-ljhcf
+      to:
+        kind: ImageStreamTag
+        name: contacts:latest
+    postCommit: {}
+    resources: {}
+    revision:
+      git:
+        author:
+          email: ping.yang@ibm.com
+          name: Ping Yang (Peter)
+        commit: 2c17b2947ddf3e796204765069856e83b8334ab5
+        committer:
+          email: ping.yang@ibm.com
+          name: Ping Yang (Peter)
+        message: add map running
+      type: Git
+    serviceAccount: builder
+    source:
+      contextDir: /contacts
+      git:
+        ref: contact
+        uri: https://github.com/PacificDynamics/DO101-apps.git
+      type: Git
+    strategy:
+      sourceStrategy:
+        from:
+          kind: DockerImage
+          name: image-registry.openshift-image-registry.svc:5000/openshift/nodejs@sha256:74a3ef2964efc03dfc239da3f09691b720ce54ff4bb47588864adb222133f0fc
+        pullSecret:
+          name: builder-dockercfg-ljhcf
+      type: Source
+    triggeredBy:
+    - imageChangeBuild:
+        fromRef:
+          kind: ImageStreamTag
+          name: nodejs:10
+          namespace: openshift
+        imageID: image-registry.openshift-image-registry.svc:5000/openshift/nodejs@sha256:74a3ef2964efc03dfc239da3f09691b720ce54ff4bb47588864adb222133f0fc
+      message: Image change
+  status:
+    completionTimestamp: "2020-06-10T00:00:15Z"
+    config:
+      kind: BuildConfig
+      name: contacts
+      namespace: peter-contact
+    duration: 163000000000
+    output:
+      to:
+        imageDigest: sha256:a8e3b509a976248f80b17138b5a9c23d69218bfaa566931ad81b8b0e9150ea9f
+    outputDockerImageReference: image-registry.openshift-image-registry.svc:5000/peter-contact/contacts:latest
+    phase: Complete
+    stages:
+    - durationMilliseconds: 407
+      name: FetchInputs
+      startTime: "2020-06-09T23:57:42Z"
+      steps:
+      - durationMilliseconds: 407
+        name: FetchGitSource
+        startTime: "2020-06-09T23:57:42Z"
+    - durationMilliseconds: 102500
+      name: PullImages
+      startTime: "2020-06-09T23:57:46Z"
+      steps:
+      - durationMilliseconds: 102500
+        name: PullBaseImage
+        startTime: "2020-06-09T23:57:46Z"
+    - durationMilliseconds: 40516
+      name: Build
+      startTime: "2020-06-09T23:59:28Z"
+      steps:
+      - durationMilliseconds: 40516
+        name: DockerBuild
+        startTime: "2020-06-09T23:59:28Z"
+    - durationMilliseconds: 5384
+      name: PushImage
+      startTime: "2020-06-10T00:00:09Z"
+      steps:
+      - durationMilliseconds: 5384
+        name: PushImage
+        startTime: "2020-06-10T00:00:09Z"
+    startTimestamp: "2020-06-09T23:57:32Z"
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      app.openshift.io/vcs-ref: contact
+      app.openshift.io/vcs-uri: https://github.com/PacificDynamics/DO101-apps.git
+    creationTimestamp: "2020-06-09T23:57:32Z"
+    generation: 1
+    labels:
+      app: contacts
+      app.kubernetes.io/component: contacts
+      app.kubernetes.io/instance: contacts
+      app.kubernetes.io/name: nodejs
+      app.kubernetes.io/part-of: contacts
+      app.openshift.io/runtime: nodejs
+      app.openshift.io/runtime-version: "10"
+    name: contacts
+    namespace: peter-contact
+    resourceVersion: "72933200"
+    selfLink: /apis/image.openshift.io/v1/namespaces/peter-contact/imagestreams/contacts
+    uid: fbc6bb3b-aaac-11ea-9257-0a580a82000a
+  spec:
+    lookupPolicy:
+      local: false
+  status:
+    dockerImageRepository: image-registry.openshift-image-registry.svc:5000/peter-contact/contacts
+    publicDockerImageRepository: default-route-openshift-image-registry.apps.ocp-na2.prod.nextcle.com/peter-contact/contacts
+    tags:
+    - items:
+      - created: "2020-06-10T00:00:14Z"
+        dockerImageReference: image-registry.openshift-image-registry.svc:5000/peter-contact/contacts@sha256:a8e3b509a976248f80b17138b5a9c23d69218bfaa566931ad81b8b0e9150ea9f
+        generation: 1
+        image: sha256:a8e3b509a976248f80b17138b5a9c23d69218bfaa566931ad81b8b0e9150ea9f
+      tag: latest
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    annotations:
+      app.openshift.io/vcs-ref: contact
+      app.openshift.io/vcs-uri: https://github.com/PacificDynamics/DO101-apps.git
+      openshift.io/host.generated: "true"
+    creationTimestamp: "2020-06-09T23:57:32Z"
+    labels:
+      app: contacts
+      app.kubernetes.io/component: contacts
+      app.kubernetes.io/instance: contacts
+      app.kubernetes.io/name: nodejs
+      app.kubernetes.io/part-of: contacts
+      app.openshift.io/runtime: nodejs
+      app.openshift.io/runtime-version: "10"
+    name: contacts
+    namespace: peter-contact
+    resourceVersion: "72931971"
+    selfLink: /apis/route.openshift.io/v1/namespaces/peter-contact/routes/contacts
+    uid: fbeb6729-aaac-11ea-9257-0a580a82000a
+  spec:
+    host: contacts-peter-contact.apps.ocp-na2.prod.nextcle.com
+    port:
+      targetPort: 8080-tcp
+    subdomain: ""
+    to:
+      kind: Service
+      name: contacts
+      weight: 100
+    wildcardPolicy: None
+  status:
+    ingress:
+    - conditions:
+      - lastTransitionTime: "2020-06-09T23:57:32Z"
+        status: "True"
+        type: Admitted
+      host: contacts-peter-contact.apps.ocp-na2.prod.nextcle.com
+      routerCanonicalHostname: apps.ocp-na2.prod.nextcle.com
+      routerName: default
+      wildcardPolicy: None
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""
