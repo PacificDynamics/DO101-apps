@@ -19,6 +19,7 @@ head
   #search
     input#addr(type='text' name='addr' value='' size='58')
     button(type='button' onclick='addr_search();') Search
+    //- button(type='button' onclick='get_weather_coordinate();') Get Weather
     #results
   br
   #map
@@ -48,14 +49,15 @@ script(type='text/javascript').
   });
   function chooseAddr(lat1, lng1)
   {
-  myMarker.closePopup();
-  map.setView([lat1, lng1],18);
-  myMarker.setLatLng([lat1, lng1]);
-  lat = lat1.toFixed(8);
-  lon = lng1.toFixed(8);
-  document.getElementById('lat').value = lat;
-  document.getElementById('lon').value = lon;
-  myMarker.bindPopup("Lat " + lat + "<br />Lon " + lon).openPopup();
+    myMarker.closePopup();
+    map.setView([lat1, lng1],18);
+    myMarker.setLatLng([lat1, lng1]);
+    lat = lat1.toFixed(8);
+    lon = lng1.toFixed(8);
+    console.log(lat,lon);
+    document.getElementById('lat').value = lat;
+    document.getElementById('lon').value = lon;
+    myMarker.bindPopup("Lat " + lat + "<br />Lon " + lon).openPopup();
   }
   function myFunction(arr)
   {
@@ -63,25 +65,25 @@ script(type='text/javascript').
   var i;
   if(arr.length > 0)
   {
-  for(i = 0; i < arr.length; i++)
+    for(i = 0; i < arr.length; i++)
   {
-  out += "<div class='address' title='Show Location and Coordinates' onclick='chooseAddr(" + arr[i].lat + ", " + arr[i].lon + ");return false;'>" + arr[i].display_name + "</div>";
+    out += "<div class='address' title='Show Location and Coordinates' onclick='chooseAddr(" + arr[i].lat + ", " + arr[i].lon + ");return false;'>" + arr[i].display_name + "</div>";
   }
   document.getElementById('results').innerHTML = out;
   }
   else
   {
-  document.getElementById('results').innerHTML = "Sorry, no results...";
+    document.getElementById('results').innerHTML = "Sorry, no results...";
   }
   }
   function addr_search()
   {
-  var inp = document.getElementById("addr");
-  var xmlhttp = new XMLHttpRequest();
-  var url = "https://nominatim.openstreetmap.org/search?format=json&limit=3&q=" + inp.value;
+    var inp = document.getElementById("addr");
+    var xmlhttp = new XMLHttpRequest();
+    var url = "https://nominatim.openstreetmap.org/search?format=json&limit=3&q=" + inp.value;
   xmlhttp.onreadystatechange = function()
   {
-  if (this.readyState == 4 && this.status == 200)
+    if (this.readyState == 4 && this.status == 200)
   {
   var myArr = JSON.parse(this.responseText);
   myFunction(myArr);
@@ -90,3 +92,25 @@ script(type='text/javascript').
   xmlhttp.open("GET", url, true);
   xmlhttp.send();
   }
+block content
+  .container
+      .row
+        .col-md-3
+          form(method="post", action="get_weather_coordinate")
+            .form-group
+            button.btn.btn-success(type="submit") Get Weather
+      if error
+        br
+        .alert.alert-danger #{error}
+      if weather
+        .row
+          .col-md-5
+            p
+            br
+            .panel.panel-primary
+              .panel-heading Weather for: #{weather.name}
+              .panel-body
+               p Current Temperature = #{weather.main.temp} !{units}, #{weather.weather[0].description}
+               p Humidity = #{weather.main.humidity} &#37;
+               p Min = #{weather.main.temp_min} !{units}
+               p Max = #{weather.main.temp_max} !{units}
